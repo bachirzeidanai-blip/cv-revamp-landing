@@ -1077,8 +1077,8 @@
 
 <script>
   /* ===================== CONFIG — SWAP THESE ===================== */
-  var GOOGLE_SHEET_WEBHOOK = 'YOUR_GOOGLE_APPS_SCRIPT_URL';
-  var STRIPE_PAYMENT_LINK  = 'https://buy.stripe.com/YOUR_LINK_HERE';
+  var GOOGLE_SHEET_WEBHOOK = 'https://script.google.com/macros/s/AKfycbwrk7F5ohMKIsfp-iAndap-DjbWXVRPZVCXcG5S6YwLsHhp6HDnx5KMy5-DTSgasO0/exec';
+  var STRIPE_PAYMENT_LINK  = 'https://buy.stripe.com/5kQ00j8WmdOK7E4bJr00000';
 
   /* ===================== LANGUAGE TOGGLE ===================== */
   var currentLang = 'en';
@@ -1178,6 +1178,18 @@
   var form = document.getElementById('leadForm');
   var submitBtn = document.getElementById('submitBtn');
 
+  function readFileAsBase64(file) {
+    return new Promise(function(resolve, reject) {
+      var reader = new FileReader();
+      reader.onload = function() {
+        var base64 = reader.result.split(',')[1];
+        resolve(base64);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
   form.addEventListener('submit', function(e) {
     e.preventDefault();
 
@@ -1207,32 +1219,43 @@
     submitBtn.disabled = true;
     submitBtn.classList.add('loading');
 
-    /* Build FormData */
-    var formData = new FormData();
-    formData.append('name', name);
-    formData.append('email', email);
-    formData.append('phone', phone);
-    formData.append('linkedin', linkedin);
-    formData.append('cvFile', cvFile);
-    formData.append('timestamp', new Date().toISOString());
-    formData.append('lang', currentLang);
+    /* Convert file to base64 then submit */
+    readFileAsBase64(cvFile).then(function(base64Data) {
+      var payload = JSON.stringify({
+        name: name,
+        email: email,
+        phone: phone,
+        linkedin: linkedin,
+        cvFileName: cvFile.name,
+        cvMimeType: cvFile.type,
+        cvBase64: base64Data,
+        timestamp: new Date().toISOString(),
+        lang: currentLang
+      });
 
-    /* Send to Google Sheets webhook */
-    fetch(GOOGLE_SHEET_WEBHOOK, {
-      method: 'POST',
-      body: formData,
+      return fetch(GOOGLE_SHEET_WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: payload,
+      });
     })
-    .then(function() {
+    .then(function(response) { return response.json(); })
+    .then(function(data) {
       showToast(currentLang === 'ar' ? 'تم الإرسال! جارٍ التوجيه للدفع...' : 'Submitted! Redirecting to payment...');
+      var clientId = data.clientId || '';
+      var stripeUrl = STRIPE_PAYMENT_LINK
+        + '?prefilled_email=' + encodeURIComponent(email)
+        + '&client_reference_id=' + encodeURIComponent(clientId);
       setTimeout(function() {
-        window.location.href = STRIPE_PAYMENT_LINK;
+        window.location.href = stripeUrl;
       }, 1500);
     })
     .catch(function() {
-      /* Still redirect on error — capture what we can */
       showToast(currentLang === 'ar' ? 'جارٍ التوجيه للدفع...' : 'Redirecting to payment...');
+      var stripeUrl = STRIPE_PAYMENT_LINK
+        + '?prefilled_email=' + encodeURIComponent(email);
       setTimeout(function() {
-        window.location.href = STRIPE_PAYMENT_LINK;
+        window.location.href = stripeUrl;
       }, 1500);
     })
     .finally(function() {
