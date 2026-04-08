@@ -695,6 +695,7 @@
       inset: 0;
       opacity: 0;
       cursor: pointer;
+      pointer-events: none;
     }
 
     .file-upload-icon { margin-bottom: 8px; display: flex; align-items: center; justify-content: center; }
@@ -709,7 +710,35 @@
       display: none;
     }
 
-    .file-name.show { display: block; }
+    .file-name.show { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+
+    .file-name .file-name-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .file-name .file-remove {
+      background: none;
+      border: 1px solid rgba(255, 68, 68, 0.4);
+      color: #FF4444;
+      font-size: 0.75rem;
+      padding: 3px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .file-name .file-remove:hover {
+      background: rgba(255, 68, 68, 0.1);
+      border-color: #FF4444;
+    }
+
+    .file-upload-area.has-file {
+      border-color: var(--neon);
+      border-style: solid;
+    }
 
     .btn-submit {
       width: 100%;
@@ -1049,7 +1078,10 @@
             <p><span class="browse" data-en="Click to browse" data-ar="اضغط لاختيار ملف">Click to browse</span> <span data-en="or drag &amp; drop" data-ar="أو اسحب وأفلت">or drag &amp; drop</span></p>
             <p style="font-size:0.8rem; margin-top:4px; color: var(--gray);" data-en="PDF or DOCX (max 5MB)" data-ar="PDF أو DOCX (حد أقصى 5 ميجابايت)">PDF or DOCX (max 5MB)</p>
           </div>
-          <div class="file-name" id="fileName"></div>
+          <div class="file-name" id="fileName">
+            <span class="file-name-text"></span>
+            <button type="button" class="file-remove" id="fileRemoveBtn" data-en="Remove" data-ar="إزالة">Remove</button>
+          </div>
         </div>
         <button type="submit" class="btn-submit" id="submitBtn">
           <span class="spinner"></span>
@@ -1133,35 +1165,74 @@
   var fileNameEl = document.getElementById('fileName');
   var uploadArea = document.getElementById('fileUploadArea');
 
+  var fileNameText = fileNameEl.querySelector('.file-name-text');
+  var fileRemoveBtn = document.getElementById('fileRemoveBtn');
+
+  function showFileSelected(file) {
+    fileNameText.textContent = file.name;
+    fileNameEl.classList.add('show');
+    uploadArea.classList.add('has-file');
+  }
+
+  function clearFileSelection() {
+    fileInput.value = '';
+    fileNameEl.classList.remove('show');
+    uploadArea.classList.remove('has-file');
+  }
+
   fileInput.addEventListener('change', function() {
     if (fileInput.files.length > 0) {
       var file = fileInput.files[0];
       if (file.size > 5 * 1024 * 1024) {
         showToast(currentLang === 'ar' ? 'حجم الملف يتجاوز 5 ميجابايت' : 'File size exceeds 5MB', true);
-        fileInput.value = '';
-        fileNameEl.classList.remove('show');
+        clearFileSelection();
         return;
       }
-      fileNameEl.textContent = file.name;
-      fileNameEl.classList.add('show');
+      showFileSelected(file);
     } else {
-      fileNameEl.classList.remove('show');
+      clearFileSelection();
     }
   });
 
+  fileRemoveBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    clearFileSelection();
+  });
+
+  /* Click on upload area triggers file picker */
+  uploadArea.addEventListener('click', function() {
+    fileInput.click();
+  });
+
+  /* Prevent browser from opening dropped files anywhere on page */
+  document.addEventListener('dragover', function(e) { e.preventDefault(); });
+  document.addEventListener('drop', function(e) { e.preventDefault(); });
+
   uploadArea.addEventListener('dragover', function(e) {
     e.preventDefault();
+    e.stopPropagation();
     uploadArea.classList.add('dragover');
   });
 
-  uploadArea.addEventListener('dragleave', function() {
+  uploadArea.addEventListener('dragleave', function(e) {
+    e.stopPropagation();
     uploadArea.classList.remove('dragover');
   });
 
   uploadArea.addEventListener('drop', function(e) {
     e.preventDefault();
+    e.stopPropagation();
     uploadArea.classList.remove('dragover');
     if (e.dataTransfer.files.length > 0) {
+      var droppedFile = e.dataTransfer.files[0];
+      var validTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword'];
+      var validExts = ['.pdf', '.docx', '.doc'];
+      var ext = droppedFile.name.substring(droppedFile.name.lastIndexOf('.')).toLowerCase();
+      if (validTypes.indexOf(droppedFile.type) === -1 && validExts.indexOf(ext) === -1) {
+        showToast(currentLang === 'ar' ? 'يرجى رفع ملف PDF أو DOCX فقط' : 'Please upload a PDF or DOCX file only', true);
+        return;
+      }
       fileInput.files = e.dataTransfer.files;
       fileInput.dispatchEvent(new Event('change'));
     }
