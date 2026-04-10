@@ -1,5 +1,8 @@
 .env
 .env.*
 ROADMAP.md
+cvrevamp-experience.md
 google-apps-script.js
+google-apps-script-*.js
 stripe-product-image.svg
+prompts/
