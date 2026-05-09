@@ -1341,13 +1341,16 @@
         window.location.href = stripeUrl;
       }, 1500);
     })
-    .catch(function() {
-      showToast(currentLang === 'ar' ? 'جارٍ التوجيه للدفع...' : 'Redirecting to payment...');
-      var stripeUrl = STRIPE_PAYMENT_LINK
-        + '?prefilled_email=' + encodeURIComponent(email);
-      setTimeout(function() {
-        window.location.href = stripeUrl;
-      }, 1500);
+    .catch(function(err) {
+      /* Webhook failed: do NOT redirect to Stripe.
+         If we redirected anyway the customer would pay but no row would exist
+         in the Leads sheet, so Pass 1 would never run and they would receive
+         nothing. Better to lose the sale than take money for a customer who
+         vanishes from the pipeline. */
+      console.error('CV Revamp submission failed:', err);
+      showToast(currentLang === 'ar'
+        ? 'حدث خطأ في الإرسال. يرجى المحاولة مرة أخرى بعد لحظات.'
+        : 'Something went wrong. Please try again in a moment.', true);
     })
     .finally(function() {
       submitBtn.disabled = false;
