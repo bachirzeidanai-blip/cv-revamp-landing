@@ -3,6 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GW614SVJJC"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-GW614SVJJC');
+    if (location.pathname.indexOf('thank-you') !== -1 && !sessionStorage.getItem('cvr_purchase_logged')) {
+      gtag('event', 'purchase', {
+        transaction_id: 'cvr_' + Date.now(),
+        value: 49.99,
+        currency: 'USD',
+        items: [{ item_id: 'cv_revamp_pro', item_name: 'CV Revamp Pro', price: 49.99, quantity: 1 }]
+      });
+      sessionStorage.setItem('cvr_purchase_logged', '1');
+    }
+  </script>
   <title>ATS CV Rewrite in 48h | Dubai &amp; GCC Jobs | CV Revamp</title>
   <meta name="description" content="Get an ATS-ready CV, LinkedIn optimization, 10+ curated UAE &amp; GCC job matches, and a career strategy report in 48 hours. One flat price, no subscription.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
