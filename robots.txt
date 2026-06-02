@@ -1,0 +1,33 @@
+# cvrevamp.info — robots.txt
+# Goal: allow all general and AI/answer-engine crawlers; keep the post-payment page out of the index.
+
+User-agent: *
+Allow: /
+Disallow: /thank-you.html
+
+# AI / answer-engine crawlers (explicitly allowed so they can cite us)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+Sitemap: https://cvrevamp.info/sitemap.xml
