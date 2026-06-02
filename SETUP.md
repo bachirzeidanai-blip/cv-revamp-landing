@@ -15,11 +15,12 @@ backend, and business notes are kept in private project notes, NOT in this publi
 - `robots.txt`, `sitemap.xml`, `llms.txt` — crawler / SEO / GEO
 - `pricing.md` — pricing reference
 
-## Analytics (tags already present in public page source)
+## Analytics (via Google Tag Manager)
 
-- GA4: `G-GW614SVJJC` in the `<head>` of `index.html` + `thank-you.html`
-- `purchase` event fires on `/thank-you` (once per session)
-- LinkedIn Insight: partner `9902625`
+- GTM container: `GTM-WPZ56RZJ` (snippet in `<head>` + `<noscript>` after `<body>` on both pages). Manage all tags in GTM, not in code.
+- GA4 `G-GW614SVJJC` is configured inside GTM (Google Tag, All Pages).
+- `purchase` conversion: `thank-you.html` runs `dataLayer.push({event:'cvr_purchase'})` once per session; a GA4 Event tag in GTM (trigger: Custom Event `cvr_purchase`) sends GA4 `purchase` with value/currency set in the tag.
+- LinkedIn Insight: partner `9902625` (still hardcoded in `<head>`; can move into GTM later).
 
 ## SEO / GEO
 
