@@ -9,6 +9,13 @@ var lastScan = null;     /* { nonce, score, verdict, name } */
 var pendingFile = null;  /* the File the user picked */
 
 window.onTurnstile = function (t) { turnstileToken = t; refreshScanBtn(); };
+window.onTurnstileError = function (code) {
+  if (window.console) console.error('Turnstile error:', code);
+  var err = document.getElementById('upload-err');
+  if (err) err.textContent = 'Security check error (' + code + '). Please refresh and try again.';
+  turnstileToken = null; refreshScanBtn();
+};
+window.onTurnstileExpired = function () { turnstileToken = null; refreshScanBtn(); };
 
 function show(id) {
   ['state-upload', 'state-loading', 'state-score', 'state-revealed'].forEach(function (s) {
@@ -46,6 +53,28 @@ document.getElementById('cv-file').addEventListener('change', function (e) {
   if (nameTxt) { nameTxt.textContent = f.name; nameBox.classList.add('show'); }
   refreshScanBtn();
 });
+
+/* Drag-and-drop: highlight the whole dropzone and accept a drop anywhere on it. */
+(function () {
+  var area = document.querySelector('.file-upload-area');
+  var input = document.getElementById('cv-file');
+  if (!area || !input) return;
+  ['dragenter', 'dragover'].forEach(function (ev) {
+    area.addEventListener(ev, function (e) { e.preventDefault(); e.stopPropagation(); area.classList.add('dragover'); });
+  });
+  area.addEventListener('dragleave', function (e) { e.preventDefault(); e.stopPropagation(); area.classList.remove('dragover'); });
+  area.addEventListener('drop', function (e) {
+    e.preventDefault(); e.stopPropagation();
+    area.classList.remove('dragover');
+    if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
+      input.files = e.dataTransfer.files;
+      input.dispatchEvent(new Event('change'));
+    }
+  });
+  /* keep the browser from opening a file dropped outside the zone */
+  window.addEventListener('dragover', function (e) { e.preventDefault(); });
+  window.addEventListener('drop', function (e) { e.preventDefault(); });
+})();
 
 document.getElementById('scan-btn').addEventListener('click', async function () {
   if (!pendingFile || !turnstileToken) return;

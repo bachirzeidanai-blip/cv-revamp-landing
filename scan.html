@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Free GCC ATS CV Scan | CV Revamp</title>
-  <meta name="description" content="Upload your CV and get your GCC ATS score in 30 seconds, plus the 3 things quietly filtering you out of UAE shortlists." />
+  <title>Free ATS CV Scan | CV Revamp</title>
+  <meta name="description" content="Upload your CV and get your ATS score in 30 seconds, plus the 3 things quietly filtering you out of UAE shortlists." />
 
   <!-- GA4 (same property as the rest of the site) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-GW614SVJJC"></script>
@@ -77,12 +77,13 @@
     .file-upload-area{display:block;position:relative;border:2px dashed var(--dark-card-border);
       border-radius:12px;padding:30px 20px;text-align:center;cursor:pointer;
       transition:border-color .3s,background .3s;margin-bottom:16px}
-    .file-upload-area:hover{border-color:var(--neon);background:rgba(0,255,135,0.03)}
+    .file-upload-area:hover,.file-upload-area.dragover{border-color:var(--neon);background:rgba(0,255,135,0.06)}
+    .file-upload-area.dragover{box-shadow:0 0 0 3px rgba(0,255,135,0.15)}
     .file-upload-icon svg{width:38px;height:38px;stroke:var(--neon);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin-bottom:8px}
     .file-upload-area p{margin:2px 0;font-size:0.92rem;color:var(--gray)}
     .file-upload-area .browse{color:var(--neon);font-weight:600}
     .file-hint{font-size:0.8rem !important}
-    .file-upload-area input[type=file]{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+    .file-upload-area input[type=file]{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;pointer-events:none}
 
     .file-name{display:none;align-items:center;gap:8px;margin:-4px 0 16px;font-size:0.88rem;color:var(--neon);font-weight:600}
     .file-name.show{display:flex}
@@ -102,12 +103,14 @@
     .err{color:#ff6b6b;font-size:0.88rem;margin:12px 0 0;min-height:1px}
     .trust{color:var(--gray);font-size:0.78rem;margin:18px 0 0;text-align:center}
 
+    /* loading */
     #state-loading{text-align:center;padding:24px 0}
     .spinner{width:46px;height:46px;margin:0 auto 18px;border:3px solid var(--dark-card-border);
       border-top-color:var(--neon);border-radius:50%;animation:spin 0.9s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
     .loading-text{color:var(--gray)}
 
+    /* score */
     .score-cap{color:var(--gray);font-size:0.9rem;margin:0;text-align:center}
     .score{font-size:4.5rem;line-height:1;font-weight:700;color:var(--neon);text-align:center;margin:6px 0}
     .verdict{text-align:center;color:var(--white);font-size:1.02rem;margin:8px 0 22px}
@@ -122,6 +125,7 @@
     .field:focus{border-color:var(--neon);box-shadow:0 0 0 3px rgba(0,255,135,0.1)}
     .field::placeholder{color:rgba(255,255,255,0.25)}
 
+    /* revealed */
     .revealed-title{font-size:1.5rem;font-weight:700;margin:0 0 16px}
     ol#issues-list{list-style:none;counter-reset:i;padding:0;margin:0 0 22px}
     ol#issues-list li{counter-increment:i;position:relative;background:var(--dark-card);
@@ -150,9 +154,9 @@
 
         <!-- STATE 1: upload -->
         <section id="state-upload">
-          <div class="badge"><span class="pulse"></span> Free GCC ATS scan</div>
+          <div class="badge"><span class="pulse"></span> Free ATS scan</div>
           <h1>Is your CV costing you <span class="highlight">interviews</span>?</h1>
-          <p class="sub">Get your GCC ATS score in 30 seconds, plus the 3 things quietly filtering you out of UAE shortlists.</p>
+          <p class="sub">Get your ATS score in 30 seconds, plus the 3 things quietly filtering you out of UAE shortlists.</p>
 
           <label class="file-upload-area" for="cv-file">
             <div class="file-upload-icon">
@@ -167,7 +171,7 @@
             <span class="file-name-text"></span>
           </div>
 
-          <div class="cf-turnstile" data-sitekey="0x4AAAAAADg6zRpNEUcgW4_q" data-callback="onTurnstile"></div>
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAADg6zRpNEUcgW4_q" data-callback="onTurnstile" data-error-callback="onTurnstileError" data-expired-callback="onTurnstileExpired"></div>
           <button type="button" id="scan-btn" class="btn-primary" disabled>Scan my CV</button>
           <p id="upload-err" class="err"></p>
           <p class="trust">Your CV is used only for this scan and stays on your device.</p>
