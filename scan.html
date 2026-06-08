@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Free GCC ATS CV Scan | CV Revamp</title>
-  <meta name="description" content="Upload your CV and get your GCC ATS score in 30 seconds. See the 3 things costing you interviews in the UAE job market." />
+  <meta name="description" content="Upload your CV and get your GCC ATS score in 30 seconds, plus the 3 things quietly filtering you out of UAE shortlists." />
 
   <!-- GA4 (same property as the rest of the site) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-GW614SVJJC"></script>
@@ -19,72 +19,199 @@
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <script src="/cv-store.js"></script>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
-    :root{ --bg:#0A0A0A; --accent:#00FF87; --text:#FFFFFF; --muted:#9aa0a6; }
-    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);
-      font-family:"Space Grotesk","Helvetica Neue",Arial,sans-serif;line-height:1.5;}
-    main{max-width:640px;margin:0 auto;padding:48px 20px;}
-    h1{font-size:30px;line-height:1.15;margin:0 0 12px} h2{font-size:24px;margin:0 0 10px}
-    p{color:#cfd2d6} .muted{color:var(--muted);font-size:13px}
-    input[type=file],input[type=text],input[type=email]{width:100%;padding:12px;margin:8px 0;
-      background:#141414;border:1px solid #2a2a2a;color:#fff;border-radius:8px;font-size:15px}
-    button,a.cta{display:inline-block;background:var(--accent);color:#0A0A0A;border:0;
-      padding:14px 28px;font-weight:700;font-size:16px;border-radius:8px;cursor:pointer;
-      text-decoration:none;margin-top:10px}
-    button:disabled{opacity:.45;cursor:not-allowed}
-    .score{font-size:44px;font-weight:700} .accent{color:var(--accent)}
-    .locked-row{background:#141414;border:1px dashed #333;color:#666;padding:14px;margin:8px 0;
-      border-radius:8px;filter:blur(.4px)}
-    ol#issues-list li{background:#141414;border-left:3px solid var(--accent);padding:12px 14px;
-      margin:8px 0;border-radius:6px;color:#eaeaea}
-    .err{color:#ff6b6b;font-size:14px}
+    :root{
+      --neon:#00FF87; --neon-dim:rgba(0,255,135,0.15); --neon-glow:rgba(0,255,135,0.4);
+      --dark:#0A0A0A; --dark-card:rgba(255,255,255,0.05); --dark-card-border:rgba(255,255,255,0.08);
+      --white:#FFFFFF; --gray:#A0A0A0; --font:'Space Grotesk',sans-serif;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:var(--font);background:var(--dark);color:var(--white);line-height:1.6;overflow-x:hidden;min-height:100vh}
+    a{text-decoration:none;color:inherit}
+    button{cursor:pointer;font-family:inherit}
+    input{font-family:inherit}
+
+    body::before{content:'';position:fixed;top:-50%;left:-50%;width:200%;height:200%;
+      background:radial-gradient(circle at 30% 15%,rgba(0,255,135,0.05) 0%,transparent 45%),
+                 radial-gradient(circle at 75% 85%,rgba(0,255,135,0.03) 0%,transparent 50%);
+      pointer-events:none;z-index:0}
+    .grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),
+                       linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);
+      background-size:60px 60px}
+
+    .container{width:100%;max-width:1140px;margin:0 auto;padding:0 20px}
+
+    .navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 0;
+      background:rgba(10,10,10,0.75);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+      border-bottom:1px solid var(--dark-card-border)}
+    .navbar .container{display:flex;align-items:center;justify-content:space-between}
+    .logo{font-size:1.4rem;font-weight:700;letter-spacing:-0.5px}
+    .logo span{color:var(--neon)}
+    .nav-link{font-size:0.95rem;color:var(--gray);transition:color .2s}
+    .nav-link:hover{color:var(--neon)}
+
+    .scan-main{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;justify-content:center;
+      padding:120px 0 60px}
+    .scan-card{width:100%;max-width:560px;margin:0 auto;background:var(--dark-card);
+      border:1px solid var(--dark-card-border);border-radius:24px;padding:40px;
+      backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+    @media(max-width:600px){.scan-card{padding:26px}}
+
+    .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;
+      background:var(--neon-dim);color:var(--neon);font-size:0.8rem;font-weight:600;margin-bottom:18px}
+    .pulse{width:8px;height:8px;border-radius:50%;background:var(--neon);box-shadow:0 0 0 0 var(--neon-glow);
+      animation:pulse 2s infinite}
+    @keyframes pulse{0%{box-shadow:0 0 0 0 var(--neon-glow)}70%{box-shadow:0 0 0 8px rgba(0,255,135,0)}100%{box-shadow:0 0 0 0 rgba(0,255,135,0)}}
+
+    h1{font-size:2rem;line-height:1.2;font-weight:700;margin:0 0 12px;letter-spacing:-0.5px}
+    @media(max-width:600px){h1{font-size:1.6rem}}
+    .highlight{color:var(--neon)}
+    .sub{color:var(--gray);font-size:1rem;margin:0 0 24px}
+
+    .file-upload-area{display:block;position:relative;border:2px dashed var(--dark-card-border);
+      border-radius:12px;padding:30px 20px;text-align:center;cursor:pointer;
+      transition:border-color .3s,background .3s;margin-bottom:16px}
+    .file-upload-area:hover{border-color:var(--neon);background:rgba(0,255,135,0.03)}
+    .file-upload-icon svg{width:38px;height:38px;stroke:var(--neon);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin-bottom:8px}
+    .file-upload-area p{margin:2px 0;font-size:0.92rem;color:var(--gray)}
+    .file-upload-area .browse{color:var(--neon);font-weight:600}
+    .file-hint{font-size:0.8rem !important}
+    .file-upload-area input[type=file]{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+
+    .file-name{display:none;align-items:center;gap:8px;margin:-4px 0 16px;font-size:0.88rem;color:var(--neon);font-weight:600}
+    .file-name.show{display:flex}
+    .file-name svg{width:16px;height:16px;stroke:var(--neon);fill:none;stroke-width:1.6;flex-shrink:0}
+
+    .cf-turnstile{margin:6px 0 16px}
+
+    .btn-primary{display:inline-block;width:100%;padding:16px 32px;background:var(--neon);color:var(--dark);
+      border:none;border-radius:12px;font-size:1.05rem;font-weight:700;text-align:center;white-space:nowrap;
+      transition:transform .2s,box-shadow .2s}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px var(--neon-glow)}
+    .btn-primary:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+    .btn-secondary{width:100%;padding:14px 28px;background:transparent;color:var(--white);
+      border:1px solid var(--dark-card-border);border-radius:12px;font-weight:600;transition:all .2s}
+    .btn-secondary:hover{border-color:var(--neon);color:var(--neon)}
+
+    .err{color:#ff6b6b;font-size:0.88rem;margin:12px 0 0;min-height:1px}
+    .trust{color:var(--gray);font-size:0.78rem;margin:18px 0 0;text-align:center}
+
+    #state-loading{text-align:center;padding:24px 0}
+    .spinner{width:46px;height:46px;margin:0 auto 18px;border:3px solid var(--dark-card-border);
+      border-top-color:var(--neon);border-radius:50%;animation:spin 0.9s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .loading-text{color:var(--gray)}
+
+    .score-cap{color:var(--gray);font-size:0.9rem;margin:0;text-align:center}
+    .score{font-size:4.5rem;line-height:1;font-weight:700;color:var(--neon);text-align:center;margin:6px 0}
+    .verdict{text-align:center;color:var(--white);font-size:1.02rem;margin:8px 0 22px}
+    .locked-wrap{margin-bottom:20px}
+    .locked-row{display:flex;align-items:center;gap:10px;background:var(--dark-card);
+      border:1px dashed var(--dark-card-border);border-radius:10px;padding:14px 16px;margin:8px 0;
+      color:#5f5f5f;filter:blur(.3px)}
+    .locked-row svg{width:18px;height:18px;stroke:#5f5f5f;fill:none;stroke-width:1.6;flex-shrink:0}
+    .gate-prompt{font-size:0.95rem;color:var(--white);margin:0 0 12px}
+    .field{width:100%;padding:14px 16px;background:rgba(255,255,255,0.04);border:1px solid var(--dark-card-border);
+      border-radius:12px;color:var(--white);font-size:1rem;outline:none;transition:border-color .3s,box-shadow .3s;margin-bottom:12px}
+    .field:focus{border-color:var(--neon);box-shadow:0 0 0 3px rgba(0,255,135,0.1)}
+    .field::placeholder{color:rgba(255,255,255,0.25)}
+
+    .revealed-title{font-size:1.5rem;font-weight:700;margin:0 0 16px}
+    ol#issues-list{list-style:none;counter-reset:i;padding:0;margin:0 0 22px}
+    ol#issues-list li{counter-increment:i;position:relative;background:var(--dark-card);
+      border:1px solid var(--dark-card-border);border-left:3px solid var(--neon);border-radius:10px;
+      padding:14px 16px 14px 46px;margin:10px 0;color:#eaeaea;font-size:0.95rem}
+    ol#issues-list li::before{content:counter(i);position:absolute;left:14px;top:14px;width:22px;height:22px;
+      border-radius:50%;background:var(--neon-dim);color:var(--neon);font-size:0.8rem;font-weight:700;
+      display:flex;align-items:center;justify-content:center}
+    .cta-box{text-align:center}
+    .cta-box p{color:var(--gray);font-size:0.92rem;margin:0 0 12px}
   </style>
 </head>
 <body>
-  <main>
-    <!-- STATE 1: upload -->
-    <section id="state-upload">
-      <h1>Get your GCC ATS score in <span class="accent">30 seconds</span></h1>
-      <p>Upload your CV (PDF or Word, max 5&nbsp;MB). We use it only to generate your scan, it stays on your device.</p>
-      <input type="file" id="cv-file" aria-label="Upload your CV (PDF or Word)" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
-      <div class="cf-turnstile" data-sitekey="0x4AAAAAADg6zRpNEUcgW4_q" data-callback="onTurnstile"></div>
-      <button type="button" id="scan-btn" disabled>Scan my CV</button>
-      <p id="upload-err" class="err"></p>
-    </section>
+  <div class="grid-bg"></div>
 
-    <!-- STATE 2: loading -->
-    <section id="state-loading" hidden>
-      <p>Scoring your CV for the UAE market&hellip;</p>
-      <button type="button" id="retry-btn" hidden>Taking too long, retry</button>
-    </section>
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="logo">CV<span>.</span>Revamp</a>
+      <div class="nav-actions"><a href="/" class="nav-link">Back to site</a></div>
+    </div>
+  </nav>
 
-    <!-- STATE 3: score + gate -->
-    <section id="state-score" hidden>
-      <h2 id="score-line" class="score"></h2>
-      <p id="verdict-line"></p>
-      <div id="locked-issues">
-        <div class="locked-row">Issue 1 &mdash; locked</div>
-        <div class="locked-row">Issue 2 &mdash; locked</div>
-        <div class="locked-row">Issue 3 &mdash; locked</div>
+  <main class="scan-main">
+    <div class="container">
+      <div class="scan-card">
+
+        <!-- STATE 1: upload -->
+        <section id="state-upload">
+          <div class="badge"><span class="pulse"></span> Free GCC ATS scan</div>
+          <h1>Is your CV costing you <span class="highlight">interviews</span>?</h1>
+          <p class="sub">Get your GCC ATS score in 30 seconds, plus the 3 things quietly filtering you out of UAE shortlists.</p>
+
+          <label class="file-upload-area" for="cv-file">
+            <div class="file-upload-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 16V4"/><path d="M8 8l4-4 4 4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+            </div>
+            <p><span class="browse">Click to upload</span> or drag your CV here</p>
+            <p class="file-hint">PDF or Word, max 5&nbsp;MB</p>
+            <input type="file" id="cv-file" aria-label="Upload your CV (PDF or Word)" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+          </label>
+          <div id="file-name" class="file-name">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+            <span class="file-name-text"></span>
+          </div>
+
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAADg6zRpNEUcgW4_q" data-callback="onTurnstile"></div>
+          <button type="button" id="scan-btn" class="btn-primary" disabled>Scan my CV</button>
+          <p id="upload-err" class="err"></p>
+          <p class="trust">Your CV is used only for this scan and stays on your device.</p>
+        </section>
+
+        <!-- STATE 2: loading -->
+        <section id="state-loading" hidden>
+          <div class="spinner"></div>
+          <p class="loading-text">Scoring your CV for the UAE market&hellip;</p>
+          <button type="button" id="retry-btn" class="btn-secondary" hidden>Taking too long, retry</button>
+        </section>
+
+        <!-- STATE 3: score + gate -->
+        <section id="state-score" hidden>
+          <p class="score-cap">Your CV scores</p>
+          <h2 id="score-line" class="score"></h2>
+          <p class="score-cap">out of 100 for the UAE market</p>
+          <p id="verdict-line" class="verdict"></p>
+          <div id="locked-issues" class="locked-wrap">
+            <div class="locked-row"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Issue 1 &mdash; locked</div>
+            <div class="locked-row"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Issue 2 &mdash; locked</div>
+            <div class="locked-row"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Issue 3 &mdash; locked</div>
+          </div>
+          <p class="gate-prompt">Enter your details to unlock the 3 fixes:</p>
+          <input type="text" id="name-field" class="field" placeholder="Your name" />
+          <input type="email" id="email-field" class="field" placeholder="Your email" />
+          <button type="button" id="reveal-btn" class="btn-primary">Reveal my 3 issues</button>
+          <p id="gate-err" class="err"></p>
+        </section>
+
+        <!-- STATE 4: revealed -->
+        <section id="state-revealed" hidden>
+          <h2 class="revealed-title">What&rsquo;s costing you interviews</h2>
+          <ol id="issues-list"></ol>
+          <div class="cta-box">
+            <p>Fix all of this in 48 hours. Money-back guarantee.</p>
+            <a id="cta-link" class="btn-primary" href="/#form">Fix my CV for $49.99</a>
+          </div>
+        </section>
+
       </div>
-      <p>Enter your details to reveal the 3 things costing you interviews:</p>
-      <input type="text" id="name-field" placeholder="Your name" />
-      <input type="email" id="email-field" placeholder="Your email" />
-      <button type="button" id="reveal-btn">Reveal my 3 issues</button>
-      <p id="gate-err" class="err"></p>
-    </section>
-
-    <!-- STATE 4: revealed -->
-    <section id="state-revealed" hidden>
-      <h2>Here is what is costing you interviews</h2>
-      <ol id="issues-list"></ol>
-      <div class="cta">
-        <p>Fix all of this in 48 hours. Money-back guarantee.</p>
-        <a id="cta-link" class="cta" href="/#form">Fix my CV for $49.99</a>
-      </div>
-    </section>
-    <p class="muted" style="margin-top:32px">Your CV is used only to generate this scan and is stored only on your device.</p>
+    </div>
   </main>
+
   <script src="/scan.js"></script>
 </body>
 </html>

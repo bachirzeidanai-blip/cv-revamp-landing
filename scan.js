@@ -37,10 +37,14 @@ function post(body) {
 document.getElementById('cv-file').addEventListener('change', function (e) {
   var f = e.target.files[0];
   var err = document.getElementById('upload-err');
+  var nameBox = document.getElementById('file-name');
+  var nameTxt = nameBox ? nameBox.querySelector('.file-name-text') : null;
   err.textContent = '';
-  if (!f) { pendingFile = null; refreshScanBtn(); return; }
-  if (f.size > 5 * 1024 * 1024) { err.textContent = 'File is over 5 MB.'; pendingFile = null; refreshScanBtn(); return; }
-  pendingFile = f; refreshScanBtn();
+  if (!f) { pendingFile = null; if (nameBox) nameBox.classList.remove('show'); refreshScanBtn(); return; }
+  if (f.size > 5 * 1024 * 1024) { err.textContent = 'File is over 5 MB.'; pendingFile = null; if (nameBox) nameBox.classList.remove('show'); refreshScanBtn(); return; }
+  pendingFile = f;
+  if (nameTxt) { nameTxt.textContent = f.name; nameBox.classList.add('show'); }
+  refreshScanBtn();
 });
 
 document.getElementById('scan-btn').addEventListener('click', async function () {
@@ -58,7 +62,7 @@ document.getElementById('scan-btn').addEventListener('click', async function () 
     }
     lastScan = res;
     if (window.gtag) gtag('event', 'scan_scored', { score: res.score });
-    document.getElementById('score-line').textContent = 'Your CV scores ' + res.score + '/100 for the UAE job market.';
+    document.getElementById('score-line').textContent = res.score;
     document.getElementById('verdict-line').textContent = res.verdict;
     document.getElementById('name-field').value = res.name || '';
     show('state-score');
