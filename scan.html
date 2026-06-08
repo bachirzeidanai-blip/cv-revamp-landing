@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Free GCC ATS CV Scan | CV Revamp</title>
+  <meta name="description" content="Upload your CV and get your GCC ATS score in 30 seconds. See the 3 things costing you interviews in the UAE job market." />
+
+  <!-- GA4 (same property as the rest of the site) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GW614SVJJC"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-GW614SVJJC');
+  </script>
+
+  <!-- Cloudflare Turnstile loader (self-updating; do NOT add SRI) -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <script src="/cv-store.js"></script>
+
+  <style>
+    :root{ --bg:#0A0A0A; --accent:#00FF87; --text:#FFFFFF; --muted:#9aa0a6; }
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);
+      font-family:"Space Grotesk","Helvetica Neue",Arial,sans-serif;line-height:1.5;}
+    main{max-width:640px;margin:0 auto;padding:48px 20px;}
+    h1{font-size:30px;line-height:1.15;margin:0 0 12px} h2{font-size:24px;margin:0 0 10px}
+    p{color:#cfd2d6} .muted{color:var(--muted);font-size:13px}
+    input[type=file],input[type=text],input[type=email]{width:100%;padding:12px;margin:8px 0;
+      background:#141414;border:1px solid #2a2a2a;color:#fff;border-radius:8px;font-size:15px}
+    button,a.cta{display:inline-block;background:var(--accent);color:#0A0A0A;border:0;
+      padding:14px 28px;font-weight:700;font-size:16px;border-radius:8px;cursor:pointer;
+      text-decoration:none;margin-top:10px}
+    button:disabled{opacity:.45;cursor:not-allowed}
+    .score{font-size:44px;font-weight:700} .accent{color:var(--accent)}
+    .locked-row{background:#141414;border:1px dashed #333;color:#666;padding:14px;margin:8px 0;
+      border-radius:8px;filter:blur(.4px)}
+    ol#issues-list li{background:#141414;border-left:3px solid var(--accent);padding:12px 14px;
+      margin:8px 0;border-radius:6px;color:#eaeaea}
+    .err{color:#ff6b6b;font-size:14px}
+  </style>
+</head>
+<body>
+  <main>
+    <!-- STATE 1: upload -->
+    <section id="state-upload">
+      <h1>Get your GCC ATS score in <span class="accent">30 seconds</span></h1>
+      <p>Upload your CV (PDF or Word, max 5&nbsp;MB). We use it only to generate your scan, it stays on your device.</p>
+      <input type="file" id="cv-file" aria-label="Upload your CV (PDF or Word)" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAADg6zRpNEUcgW4_q" data-callback="onTurnstile"></div>
+      <button type="button" id="scan-btn" disabled>Scan my CV</button>
+      <p id="upload-err" class="err"></p>
+    </section>
+
+    <!-- STATE 2: loading -->
+    <section id="state-loading" hidden>
+      <p>Scoring your CV for the UAE market&hellip;</p>
+      <button type="button" id="retry-btn" hidden>Taking too long, retry</button>
+    </section>
+
+    <!-- STATE 3: score + gate -->
+    <section id="state-score" hidden>
+      <h2 id="score-line" class="score"></h2>
+      <p id="verdict-line"></p>
+      <div id="locked-issues">
+        <div class="locked-row">Issue 1 &mdash; locked</div>
+        <div class="locked-row">Issue 2 &mdash; locked</div>
+        <div class="locked-row">Issue 3 &mdash; locked</div>
+      </div>
+      <p>Enter your details to reveal the 3 things costing you interviews:</p>
+      <input type="text" id="name-field" placeholder="Your name" />
+      <input type="email" id="email-field" placeholder="Your email" />
+      <button type="button" id="reveal-btn">Reveal my 3 issues</button>
+      <p id="gate-err" class="err"></p>
+    </section>
+
+    <!-- STATE 4: revealed -->
+    <section id="state-revealed" hidden>
+      <h2>Here is what is costing you interviews</h2>
+      <ol id="issues-list"></ol>
+      <div class="cta">
+        <p>Fix all of this in 48 hours. Money-back guarantee.</p>
+        <a id="cta-link" class="cta" href="/#form">Fix my CV for $49.99</a>
+      </div>
+    </section>
+    <p class="muted" style="margin-top:32px">Your CV is used only to generate this scan and is stored only on your device.</p>
+  </main>
+  <script src="/scan.js"></script>
+</body>
+</html>
