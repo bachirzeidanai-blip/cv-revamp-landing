@@ -2,8 +2,9 @@
    States: upload -> loading -> result. Deploy to repo ROOT as /scan.js. */
 
 var SCAN_API = 'https://script.google.com/macros/s/AKfycbxIWCr9SNW7TnIh7OqGq1RlY1wA5BNppTh7Mm9QGN6TquDHuSo39v9R17sxAX46yJjW/exec';
-var CATEGORIES = ['ATS Parseability', 'Achievements & Results', 'Keyword & Role Match',
-                  'Professional Summary', 'Skills & Certifications', 'GCC Market Fit'];
+var CATEGORIES = ['ATS Parseability', 'Quantified Impact', 'Professional Summary & Positioning',
+                  'Keyword Optimization', 'Skills Relevance', 'Education & Credentials',
+                  'Certifications & Professional Development', 'Career Progression & Consistency'];
 
 var turnstileToken = null;
 var pendingFile = null;
@@ -36,7 +37,7 @@ function post(body) {
     .then(function (r) { return r.json(); });
 }
 
-/* ---- upload page: render the 6 evaluation dials ---- */
+/* ---- upload page: render the evaluation dials ---- */
 (function renderDials() {
   var wrap = document.getElementById('dials'); if (!wrap) return;
   CATEGORIES.forEach(function (c) {
@@ -79,7 +80,7 @@ input.addEventListener('change', function () {
 
 /* ---- loading animation: make it feel like the system is reading the CV ---- */
 var LSTEPS = ['Uploading your CV…', 'Extracting text and layout…', 'Parsing sections and dates…',
-              'Matching against ATS keywords…', 'Scoring the 6 categories…', 'Compiling your breakdown…'];
+              'Matching against ATS keywords…', 'Scoring the 8 dimensions…', 'Compiling your breakdown…'];
 var ltimer = null;
 function startLoader() {
   var el = document.getElementById('loading-text'); var i = 0;

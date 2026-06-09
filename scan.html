@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Free ATS CV Scan | CV Revamp</title>
-  <meta name="description" content="Score your CV against the 6 things UAE recruiters and ATS actually check. Free, in 30 seconds." />
+  <meta name="description" content="Score your CV across the 8 dimensions recruiters and ATS systems actually check. Free, in 30 seconds." />
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-GW614SVJJC"></script>
   <script>
@@ -54,8 +54,8 @@
     .highlight{color:var(--neon)}
     .sub{color:var(--gray);text-align:center;font-size:1.05rem;max-width:580px;margin:0 auto 30px}
 
-    .dials{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 auto 34px;max-width:680px}
-    @media(max-width:600px){.dials{grid-template-columns:repeat(2,1fr)}}
+    /* dials preview (upload page) */
+    .dials{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:12px;margin:0 auto 34px;max-width:740px}
     .dial{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 14px;text-align:center}
     .dial .ring{width:34px;height:34px;border-radius:50%;margin:0 auto 9px;border:3px solid rgba(255,255,255,0.12);border-top-color:var(--neon)}
     .dial .dn{font-size:0.82rem;font-weight:600;color:#e8e8e8;line-height:1.25}
@@ -88,11 +88,13 @@
     .err{color:var(--red);font-size:0.88rem;margin:12px 0 0;min-height:1px;text-align:center}
     .trust{color:var(--gray);font-size:0.78rem;margin:16px 0 0;text-align:center}
 
+    /* loading */
     #state-loading{text-align:center;padding:60px 0}
     .spinner{width:48px;height:48px;margin:0 auto 20px;border:3px solid var(--border);border-top-color:var(--neon);border-radius:50%;animation:spin .9s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
     .loading-text{color:var(--gray);font-size:1.05rem;min-height:1.4em;transition:opacity .2s}
 
+    /* result: gauge */
     .hero{display:flex;flex-direction:column;align-items:center}
     .gwrap{position:relative;display:inline-flex;align-items:center;justify-content:center;width:210px;height:210px}
     .gnum{position:absolute;display:flex;flex-direction:column;align-items:center}
@@ -147,8 +149,8 @@
       <!-- ===== STATE 1: UPLOAD ===== -->
       <section id="state-upload">
         <div class="eyebrow">FREE ATS SCAN</div>
-        <h1>How does your CV score for the <span class="highlight">GCC market</span>?</h1>
-        <p class="sub">Upload your CV and we'll score it against the 6 things UAE recruiters and ATS platforms actually check, then show you exactly what's holding it back.</p>
+        <h1>How does your CV score with <span class="highlight">recruiters and ATS</span>?</h1>
+        <p class="sub">Upload your CV and we'll score it across the 8 dimensions recruiters and ATS systems actually check, then show you exactly what's holding it back.</p>
 
         <div class="dials" id="dials"></div>
 
@@ -202,7 +204,7 @@
 
         <div class="cta">
           <h2>We fix every one of these in 48 hours.</h2>
-          <div class="ctasub">A recruiter-ready, ATS-proof CV, a LinkedIn optimization guidebook, and a curated list of GCC job matches.</div>
+          <div class="ctasub">A recruiter-ready, ATS-proof CV, a LinkedIn optimization guidebook, and a curated list of job matches.</div>
           <a id="cta-link" class="btn-primary" href="/#form">Rebuild my CV for $49.99</a>
           <div class="guar">Money-back guarantee. One-time payment, no subscription.</div>
         </div>
