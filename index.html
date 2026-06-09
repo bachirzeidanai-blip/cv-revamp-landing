@@ -1366,6 +1366,7 @@
     .then(function(response) { return response.json(); })
     .then(function(data) {
       showToast(currentLang === 'ar' ? 'تم الإرسال! جارٍ التوجيه للدفع...' : 'Submitted! Redirecting to payment...');
+      if (window.CVStore) CVStore.clearScan();
       var clientId = data.clientId || '';
       var stripeUrl = STRIPE_PAYMENT_LINK
         + '?prefilled_email=' + encodeURIComponent(email)
@@ -1401,6 +1402,27 @@
       }
     });
   });
+</script>
+
+<script src="/cv-store.js"></script>
+<script>
+  /* Carry-forward from /scan: prefill name + email and inject the scanned CV into the upload field. */
+  (async function () {
+    if (!window.CVStore) return;
+    var scan = await CVStore.getScan();
+    if (!scan) return;
+    var nm = document.getElementById('fullName'); if (nm && scan.name) nm.value = scan.name;
+    var em = document.getElementById('email'); if (em && scan.email) em.value = scan.email;
+    var input = document.getElementById('cvFile');
+    if (input) {
+      try {
+        var dt = new DataTransfer();
+        dt.items.add(new File([scan.blob], scan.fileName, { type: scan.mimeType }));
+        input.files = dt.files;
+        input.dispatchEvent(new Event('change'));
+      } catch (e) {}
+    }
+  })();
 </script>
 
 </body>
