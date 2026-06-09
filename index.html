@@ -179,6 +179,11 @@
       .nav-cta { display: inline-block; }
     }
 
+    .nav-scan { padding: 8px 16px; color: var(--white); border: 1px solid var(--dark-card-border); border-radius: 8px; font-weight: 600; font-size: 0.9rem; transition: all 0.2s; white-space: nowrap; }
+    .nav-scan:hover { border-color: var(--neon); color: var(--neon); }
+    .hero-scan { display: inline-block; margin-top: 18px; color: var(--neon); font-weight: 600; font-size: 1rem; }
+    .hero-scan:hover { text-decoration: underline; }
+
     /* ===================== HERO ===================== */
     .hero {
       min-height: 100vh;
@@ -923,6 +928,7 @@
         <button class="active" data-lang="en" onclick="setLang('en')">EN</button>
         <button data-lang="ar" onclick="setLang('ar')">AR</button>
       </div>
+      <a href="/scan" class="nav-scan" data-en="Free CV Scan" data-ar="فحص مجاني للسيرة">Free CV Scan</a>
       <a href="#form" class="nav-cta" data-en="Get Started" data-ar="ابدأ الآن">Get Started</a>
     </div>
   </div>
@@ -946,6 +952,7 @@
       <a href="#form" class="btn-primary" data-en="Revamp My CV Now" data-ar="طوّر سيرتي الذاتية">Revamp My CV Now</a>
       <a href="#how" class="btn-secondary" data-en="See How It Works" data-ar="كيف يعمل">See How It Works</a>
     </div>
+    <a href="/scan" class="hero-scan reveal reveal-delay-4" data-en="Not sure yet? Get a free 30-second CV scan" data-ar="لست متأكداً؟ احصل على فحص مجاني لسيرتك خلال 30 ثانية">Not sure yet? Get a free 30-second CV scan</a>
     <div class="hero-stats reveal reveal-delay-4">
       <div class="hero-stat">
         <div class="num">500+</div>
