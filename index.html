@@ -1141,6 +1141,16 @@
             <button type="button" class="file-remove" id="fileRemoveBtn" data-en="Remove" data-ar="إزالة">Remove</button>
           </div>
         </div>
+        <div class="form-group" style="margin-top:-4px">
+          <label style="display:flex;align-items:flex-start;gap:10px;font-weight:400;font-size:0.85rem;line-height:1.5;cursor:pointer;text-transform:none">
+            <input type="checkbox" id="agreeTerms" required style="margin-top:3px;width:16px;height:16px;flex-shrink:0">
+            <span><span data-en="I have read and agree to the " data-ar="لقد قرأت وأوافق على ">I have read and agree to the </span><a href="/terms.html" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline" data-en="Terms of Service" data-ar="شروط الخدمة">Terms of Service</a><span data-en="." data-ar=".">.</span></span>
+          </label>
+          <label style="display:flex;align-items:flex-start;gap:10px;font-weight:400;font-size:0.85rem;line-height:1.5;cursor:pointer;margin-top:10px;text-transform:none">
+            <input type="checkbox" id="agreePrivacy" required style="margin-top:3px;width:16px;height:16px;flex-shrink:0">
+            <span><span data-en="I have read and agree to the " data-ar="لقد قرأت وأوافق على ">I have read and agree to the </span><a href="/privacy.html" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline" data-en="Privacy Policy" data-ar="سياسة الخصوصية">Privacy Policy</a><span data-en=", including that my CV is processed to deliver my order." data-ar="، بما في ذلك معالجة سيرتي الذاتية لتنفيذ طلبي.">, including that my CV is processed to deliver my order.</span></span>
+          </label>
+        </div>
         <button type="submit" class="btn-submit" id="submitBtn">
           <span class="spinner"></span>
           <span class="btn-text" data-en="Submit &amp; Proceed to Payment" data-ar="أرسل وانتقل للدفع">Submit &amp; Proceed to Payment</span>
@@ -1343,6 +1353,12 @@
 
     if (!cvFile) {
       showToast(currentLang === 'ar' ? 'يرجى رفع سيرتك الذاتية' : 'Please upload your CV', true);
+      return;
+    }
+
+    /* Consent gate: both Terms and Privacy must be agreed before we process the CV or take payment */
+    if (!document.getElementById('agreeTerms').checked || !document.getElementById('agreePrivacy').checked) {
+      showToast(currentLang === 'ar' ? 'يرجى الموافقة على شروط الخدمة وسياسة الخصوصية' : 'Please agree to the Terms of Service and Privacy Policy', true);
       return;
     }
 

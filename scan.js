@@ -8,6 +8,8 @@ var CATEGORIES = ['ATS Parseability', 'Quantified Impact', 'Professional Summary
 
 var turnstileToken = null;
 var pendingFile = null;
+var CONSENT_REQUIRED_TEXT = 'I agree to the Privacy Policy and Terms, and that my CV is processed to generate my scan.';
+var CONSENT_MARKETING_TEXT = 'Email me my results, plus CV tips and offers. I can unsubscribe anytime.';
 
 window.onTurnstile = function (t) { turnstileToken = t; refreshBtn(); };
 window.onTurnstileError = function (code) {
@@ -23,7 +25,7 @@ function show(id) {
     var el = document.getElementById(s); if (el) el.hidden = (s !== id);
   });
 }
-function refreshBtn() { document.getElementById('scan-btn').disabled = !(pendingFile && turnstileToken); }
+function refreshBtn() { var c = document.getElementById('consent-required'); document.getElementById('scan-btn').disabled = !(pendingFile && turnstileToken && c && c.checked); }
 function tier(s) { return s < 40 ? 'low' : (s < 70 ? 'mid' : 'high'); }
 function fileToB64(f) {
   return new Promise(function (resolve, reject) {
@@ -37,7 +39,7 @@ function post(body) {
     .then(function (r) { return r.json(); });
 }
 
-/* ---- upload page: render the evaluation dials ---- */
+/* ---- upload page: render the 8 evaluation dials ---- */
 (function renderDials() {
   var wrap = document.getElementById('dials'); if (!wrap) return;
   CATEGORIES.forEach(function (c) {
@@ -62,6 +64,7 @@ input.addEventListener('change', function () {
   if (nameTxt) { nameTxt.textContent = f.name; nameBox.classList.add('show'); }
   refreshBtn();
 });
+(function () { var c = document.getElementById('consent-required'); if (c) c.addEventListener('change', refreshBtn); })();
 (function () {
   var area = document.querySelector('.file-upload-area'); if (!area) return;
   ['dragenter', 'dragover'].forEach(function (ev) {
@@ -80,7 +83,7 @@ input.addEventListener('change', function () {
 
 /* ---- loading animation: make it feel like the system is reading the CV ---- */
 var LSTEPS = ['Uploading your CV…', 'Extracting text and layout…', 'Parsing sections and dates…',
-              'Matching against ATS keywords…', 'Scoring the 8 dimensions…', 'Compiling your breakdown…'];
+              'Matching against ATS keywords…', 'Scoring the 8 categories…', 'Compiling your breakdown…'];
 var ltimer = null;
 function startLoader() {
   var el = document.getElementById('loading-text'); var i = 0;
@@ -171,12 +174,18 @@ document.getElementById('scan-btn').addEventListener('click', async function () 
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err.textContent = 'Enter a valid email.'; return; }
   if (!pendingFile) { err.textContent = 'Upload your CV first.'; return; }
   if (!turnstileToken) { err.textContent = 'Please complete the verification.'; return; }
+  var consentReq = document.getElementById('consent-required');
+  if (!consentReq || !consentReq.checked) { err.textContent = 'Please agree to the Privacy Policy and Terms to scan.'; return; }
+  var consentMkt = document.getElementById('consent-marketing');
 
   show('state-loading'); startLoader();
   var timeout = setTimeout(function () { var rb = document.getElementById('retry-btn'); if (rb) { rb.hidden = false; rb.style.display = 'inline-block'; } }, 75000);
   try {
     var b64 = await fileToB64(pendingFile);
-    var res = await post({ action: 'scan', email: email, name: name, cvBase64: b64, fileName: pendingFile.name, mimeType: pendingFile.type, turnstileToken: turnstileToken });
+    var res = await post({ action: 'scan', email: email, name: name, cvBase64: b64, fileName: pendingFile.name, mimeType: pendingFile.type, turnstileToken: turnstileToken,
+      consentProcessing: true, consentProcessingText: CONSENT_REQUIRED_TEXT,
+      consentMarketing: !!(consentMkt && consentMkt.checked), consentMarketingText: CONSENT_MARKETING_TEXT,
+      consentSource: '/scan' });
     clearTimeout(timeout); stopLoader();
     if (res.status !== 'success') {
       show('state-upload');
