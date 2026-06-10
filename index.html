@@ -1144,11 +1144,11 @@
         <div class="form-group" style="margin-top:-4px">
           <label style="display:flex;align-items:flex-start;gap:10px;font-weight:400;font-size:0.85rem;line-height:1.5;cursor:pointer;text-transform:none">
             <input type="checkbox" id="agreeTerms" required style="margin-top:3px;width:16px;height:16px;flex-shrink:0">
-            <span><span data-en="I have read and agree to the " data-ar="لقد قرأت وأوافق على ">I have read and agree to the </span><a href="/terms.html" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline" data-en="Terms of Service" data-ar="شروط الخدمة">Terms of Service</a><span data-en="." data-ar=".">.</span></span>
+            <span><span data-en="I have read and agree to the " data-ar="لقد قرأت وأوافق على ">I have read and agree to the </span><a href="/terms.html" target="_blank" rel="noopener" data-href-en="/terms.html" data-href-ar="/terms-ar.html" style="color:inherit;text-decoration:underline" data-en="Terms of Service" data-ar="شروط الخدمة">Terms of Service</a><span data-en="." data-ar=".">.</span></span>
           </label>
           <label style="display:flex;align-items:flex-start;gap:10px;font-weight:400;font-size:0.85rem;line-height:1.5;cursor:pointer;margin-top:10px;text-transform:none">
             <input type="checkbox" id="agreePrivacy" required style="margin-top:3px;width:16px;height:16px;flex-shrink:0">
-            <span><span data-en="I have read and agree to the " data-ar="لقد قرأت وأوافق على ">I have read and agree to the </span><a href="/privacy.html" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline" data-en="Privacy Policy" data-ar="سياسة الخصوصية">Privacy Policy</a><span data-en=", including that my CV is processed to deliver my order." data-ar="، بما في ذلك معالجة سيرتي الذاتية لتنفيذ طلبي.">, including that my CV is processed to deliver my order.</span></span>
+            <span><span data-en="I have read and agree to the " data-ar="لقد قرأت وأوافق على ">I have read and agree to the </span><a href="/privacy.html" target="_blank" rel="noopener" data-href-en="/privacy.html" data-href-ar="/privacy-ar.html" style="color:inherit;text-decoration:underline" data-en="Privacy Policy" data-ar="سياسة الخصوصية">Privacy Policy</a><span data-en=", including that my CV is processed to deliver my order." data-ar="، بما في ذلك معالجة سيرتي الذاتية لتنفيذ طلبي.">, including that my CV is processed to deliver my order.</span></span>
           </label>
         </div>
         <button type="submit" class="btn-submit" id="submitBtn">
@@ -1206,6 +1206,10 @@
 
     document.querySelectorAll('input[data-placeholder-' + lang + ']').forEach(function(el) {
       el.placeholder = el.getAttribute('data-placeholder-' + lang);
+    });
+
+    document.querySelectorAll('[data-href-' + lang + ']').forEach(function(el) {
+      el.setAttribute('href', el.getAttribute('data-href-' + lang));
     });
   }
 
