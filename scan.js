@@ -178,6 +178,7 @@ document.getElementById('scan-btn').addEventListener('click', async function () 
   if (!consentReq || !consentReq.checked) { err.textContent = 'Please agree to the Privacy Policy and Terms to scan.'; return; }
   var consentMkt = document.getElementById('consent-marketing');
 
+  var metaEventId = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : ('ld_' + Date.now() + '_' + Math.random().toString(36).slice(2));
   show('state-loading'); startLoader();
   var timeout = setTimeout(function () { var rb = document.getElementById('retry-btn'); if (rb) { rb.hidden = false; rb.style.display = 'inline-block'; } }, 75000);
   try {
@@ -185,7 +186,7 @@ document.getElementById('scan-btn').addEventListener('click', async function () 
     var res = await post({ action: 'scan', email: email, name: name, cvBase64: b64, fileName: pendingFile.name, mimeType: pendingFile.type, turnstileToken: turnstileToken,
       consentProcessing: true, consentProcessingText: CONSENT_REQUIRED_TEXT,
       consentMarketing: !!(consentMkt && consentMkt.checked), consentMarketingText: CONSENT_MARKETING_TEXT,
-      consentSource: '/scan' });
+      consentSource: '/scan', metaEventId: metaEventId });
     clearTimeout(timeout); stopLoader();
     if (res.status !== 'success') {
       show('state-upload');
@@ -196,6 +197,7 @@ document.getElementById('scan-btn').addEventListener('click', async function () 
     }
     try { await CVStore.saveScan({ blob: pendingFile, fileName: pendingFile.name, mimeType: pendingFile.type, name: name, email: email }); } catch (e) {}
     if (window.gtag) gtag('event', 'email_captured');
+    if (window.fbq) fbq('track', 'Lead', {}, { eventID: metaEventId });
     renderResult(res);
   } catch (e) {
     clearTimeout(timeout); stopLoader(); show('state-upload');
