@@ -22,10 +22,10 @@
     window.dataLayer = window.dataLayer || [];
     if (!sessionStorage.getItem('cvr_purchase_logged')) {
       window.dataLayer.push({ event: 'cvr_purchase' });
-      if (window.fbq) fbq('track', 'Purchase', { value: 49.99, currency: 'USD' });
+      if (window.fbq) fbq('track', 'Purchase', { value: 9.99, currency: 'USD' });
       try {
         var _e = new URLSearchParams(location.search).get('email') || (window.localStorage && localStorage.getItem('cvr_email')) || '';
-        fetch('https://script.google.com/macros/s/AKfycbxIWCr9SNW7TnIh7OqGq1RlY1wA5BNppTh7Mm9QGN6TquDHuSo39v9R17sxAX46yJjW/exec?event=sale&value=49.99&email=' + encodeURIComponent(_e), { mode: 'no-cors', keepalive: true });
+        fetch('https://script.google.com/macros/s/AKfycbxIWCr9SNW7TnIh7OqGq1RlY1wA5BNppTh7Mm9QGN6TquDHuSo39v9R17sxAX46yJjW/exec?event=sale&value=9.99&email=' + encodeURIComponent(_e), { mode: 'no-cors', keepalive: true });
       } catch (e) {}
       sessionStorage.setItem('cvr_purchase_logged', '1');
     }

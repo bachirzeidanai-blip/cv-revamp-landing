@@ -1,7 +1,7 @@
 # Pricing — CV Revamp
 
 ## Complete Career Package
-- Price: $49.99 USD, one-time (billed in AED equivalent). [confirm before publish]
+- Price: $9.99 USD launch offer (regular price $49.99), one-time (billed in AED equivalent). [confirm before publish]
 - Turnaround: 48 hours
 - Subscription: none
 - Languages: English, Arabic
