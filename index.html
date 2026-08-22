@@ -57,6 +57,18 @@
       --font-ar: 'Cairo', sans-serif;
     }
 
+    .testimonial {
+      max-width: 680px; margin: 0 auto 44px; padding: 30px 34px;
+      background: var(--dark-card); border: 1px solid var(--dark-card-border);
+      border-radius: 16px; border-left: 3px solid var(--neon);
+    }
+    .testimonial-quote { color: var(--white); font-size: 1.02rem; line-height: 1.75; margin-bottom: 18px; }
+    .testimonial-attrib { display: flex; flex-direction: column; gap: 2px; }
+    .testimonial-name { color: var(--neon); font-weight: 700; font-size: .95rem; }
+    .testimonial-role { color: var(--gray); font-size: .85rem; }
+    [dir="rtl"] .testimonial { border-left: 1px solid var(--dark-card-border); border-right: 3px solid var(--neon); }
+    @media (max-width: 600px) { .testimonial { padding: 24px 22px; } }
+
     html { scroll-behavior: smooth; }
 
     body {
@@ -1071,6 +1083,13 @@
       <h2 class="section-title reveal reveal-delay-1" data-en="Invest in Your Career" data-ar="استثمر في مسيرتك المهنية">Invest in Your Career</h2>
       <p class="section-subtitle reveal reveal-delay-2" data-en="One package. Everything included. No hidden fees." data-ar="باقة واحدة. كل شيء متضمن. بدون رسوم مخفية.">One package. Everything included. No hidden fees.</p>
     </div>
+    <div class="testimonial reveal">
+      <p class="testimonial-quote" data-en="“What immediately stood out to me was their thoughtful ATS review, which they offered before I even made a payment. It gave me confidence that this was a different kind of CV service. The questionnaire that followed was equally impressive; it was clear they weren’t simply relying on AI, but genuinely wanted to understand me, my experience and my career goals before building my CV. The turnaround was incredible; I received my CV within a day, without having to make a single follow-up call. The entire process was seamless and automated, yet still felt highly personalised. I also learnt where I had been going wrong in my job applications and received both an ATS-friendly CV and a beautifully designed visual CV. It was thoughtful, affordable, fast and genuinely valuable. I was very impressed with the experience.”" data-ar="“ما لفت انتباهي فوراً هو مراجعتهم المدروسة لتوافق السيرة مع أنظمة تتبّع المتقدّمين، والتي قدّموها قبل أن أدفع أي مبلغ. منحني ذلك ثقة بأن هذه خدمة مختلفة عن غيرها. والاستبيان الذي تلاه كان لا يقل إثارة للإعجاب؛ كان واضحاً أنهم لا يعتمدون على الذكاء الاصطناعي وحده، بل يريدون حقاً فهمي وفهم خبرتي وأهدافي المهنية قبل بناء سيرتي الذاتية. كانت سرعة الإنجاز مذهلة؛ استلمت سيرتي خلال يوم واحد دون الحاجة إلى أي مكالمة متابعة. كانت العملية بأكملها سلسة وآلية، ومع ذلك ظلّت شخصية للغاية. كما تعلّمت أين كنت أخطئ في طلبات التوظيف، وحصلت على سيرة ذاتية متوافقة مع أنظمة التتبّع وأخرى مصمّمة بصرياً بشكل جميل. كانت خدمة مدروسة وميسورة التكلفة وسريعة وقيّمة حقاً. أُعجبت كثيراً بالتجربة.”">“What immediately stood out to me was their thoughtful ATS review, which they offered before I even made a payment. It gave me confidence that this was a different kind of CV service. The questionnaire that followed was equally impressive; it was clear they weren’t simply relying on AI, but genuinely wanted to understand me, my experience and my career goals before building my CV. The turnaround was incredible; I received my CV within a day, without having to make a single follow-up call. The entire process was seamless and automated, yet still felt highly personalised. I also learnt where I had been going wrong in my job applications and received both an ATS-friendly CV and a beautifully designed visual CV. It was thoughtful, affordable, fast and genuinely valuable. I was very impressed with the experience.”</p>
+      <div class="testimonial-attrib">
+        <span class="testimonial-name">Christine Kanana Mbaabu</span>
+        <span class="testimonial-role" data-en="Programme Manager, international development" data-ar="مديرة برامج، التنمية الدولية">Programme Manager, international development</span>
+      </div>
+    </div>
     <div class="pricing-wrapper">
       <div class="pricing-card reveal">
         <div class="pricing-label" data-en="Complete Package" data-ar="الباقة الكاملة">Complete Package</div>
@@ -1130,8 +1149,8 @@
           <input type="email" id="email" name="email" required placeholder="john@example.com" data-placeholder-en="john@example.com" data-placeholder-ar="mohammed@example.com">
         </div>
         <div class="form-group">
-          <label data-en="Phone Number" data-ar="رقم الهاتف">Phone Number</label>
-          <input type="tel" id="phone" name="phone" required placeholder="+971 50 123 4567" data-placeholder-en="+971 50 123 4567" data-placeholder-ar="+971 50 123 4567">
+          <label data-en="Phone Number (optional)" data-ar="رقم الهاتف (اختياري)">Phone Number (optional)</label>
+          <input type="tel" id="phone" name="phone" placeholder="+971 50 123 4567" data-placeholder-en="+971 50 123 4567" data-placeholder-ar="+971 50 123 4567">
         </div>
         <div class="form-group">
           <label><span data-en="LinkedIn URL" data-ar="رابط لينكدإن">LinkedIn URL</span> <span class="optional" data-en="(optional)" data-ar="(اختياري)">(optional)</span></label>
@@ -1354,7 +1373,7 @@
     var cvFile = document.getElementById('cvFile').files[0];
 
     /* Basic validation */
-    if (!name || !email || !phone) {
+    if (!name || !email) {
       showToast(currentLang === 'ar' ? 'يرجى ملء جميع الحقول المطلوبة' : 'Please fill all required fields', true);
       return;
     }
