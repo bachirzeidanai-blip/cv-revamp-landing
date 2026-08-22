@@ -1,4 +1,4 @@
-# cvrevamp.info — robots.txt
+# cvrevamp.info robots.txt
 # Goal: allow all general and AI/answer-engine crawlers; keep the post-payment page out of the index.
 
 User-agent: *

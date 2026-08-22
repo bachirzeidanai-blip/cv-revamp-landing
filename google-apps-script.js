@@ -1,5 +1,5 @@
 /**
- * Google Apps Script — CV Revamp Lead Form Webhook
+ * Google Apps Script: CV Revamp Lead Form Webhook
  *
  * SETUP:
  * 1. Create a new Google Sheet

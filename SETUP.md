@@ -10,10 +10,10 @@ backend, and business notes are kept in private project notes, NOT in this publi
 
 ## Files
 
-- `index.html` — landing page (EN + AR/RTL)
-- `thank-you.html` — post-payment page (Stripe success URL points here)
-- `robots.txt`, `sitemap.xml`, `llms.txt` — crawler / SEO / GEO
-- `pricing.md` — pricing reference
+- `index.html`: landing page (EN + AR/RTL)
+- `thank-you.html`: post-payment page (Stripe success URL points here)
+- `robots.txt`, `sitemap.xml`, `llms.txt`: crawler / SEO / GEO
+- `pricing.md`: pricing reference
 
 ## Analytics (via Google Tag Manager)
 

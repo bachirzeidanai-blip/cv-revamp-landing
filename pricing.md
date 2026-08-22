@@ -1,4 +1,4 @@
-# Pricing — CV Revamp
+# CV Revamp Pricing
 
 ## Complete Career Package
 - Price: $9.99 USD launch offer (regular price $49.99), one-time (billed in AED equivalent). [confirm before publish]
