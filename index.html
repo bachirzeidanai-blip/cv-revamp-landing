@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- PostHog product analytics -->
+  <script src="/posthog-init.js"></script>
   <!-- Meta Pixel -->
   <script>
   !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
@@ -1396,6 +1398,10 @@
       return;
     }
 
+    /* Funnel step 2: validation passed, so a real submission attempt starts here.
+       No name, email, phone or CV content is sent to analytics. */
+    if (window.cvrTrack) cvrTrack('cv_form_submitted', { lang: currentLang });
+
     /* Loading state */
     submitBtn.disabled = true;
     submitBtn.classList.add('loading');
@@ -1425,9 +1431,24 @@
       showToast(currentLang === 'ar' ? 'تم الإرسال! جارٍ التوجيه للدفع...' : 'Submitted! Redirecting to payment...');
       if (window.CVStore) CVStore.clearScan();
       var clientId = data.clientId || '';
+
+      /* Funnel step 3: the row and the CV are safely stored. Identify by clientId,
+         never by email, so the person record carries no personal data. clientId is
+         also what Stripe receives as client_reference_id, so the payment can be
+         joined back to this session later without us storing an address here. */
+      if (clientId && window.posthog && posthog.identify) {
+        posthog.identify(clientId, { lang: currentLang });
+      }
+      if (window.cvrTrack) cvrTrack('lead_saved', { client_id: clientId, lang: currentLang });
+
       var stripeUrl = STRIPE_PAYMENT_LINK
         + '?prefilled_email=' + encodeURIComponent(email)
         + '&client_reference_id=' + encodeURIComponent(clientId);
+
+      /* Funnel step 4: the last thing that happens on our own domain. Everything
+         after this is Stripe, which is exactly where the drop-off has been hiding. */
+      if (window.cvrTrack) cvrTrack('checkout_opened', { client_id: clientId, lang: currentLang });
+
       setTimeout(function() {
         window.location.href = stripeUrl;
       }, 1500);
@@ -1439,6 +1460,11 @@
          nothing. Better to lose the sale than take money for a customer who
          vanishes from the pipeline. */
       console.error('CV Revamp submission failed:', err);
+
+      /* Not part of the funnel, but the one failure that silently costs a sale.
+         If this ever spikes, the webhook is down and nobody would otherwise know. */
+      if (window.cvrTrack) cvrTrack('submission_failed', { lang: currentLang });
+
       showToast(currentLang === 'ar'
         ? 'حدث خطأ في الإرسال. يرجى المحاولة مرة أخرى بعد لحظات.'
         : 'Something went wrong. Please try again in a moment.', true);

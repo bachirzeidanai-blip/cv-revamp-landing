@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- PostHog product analytics -->
+  <script src="/posthog-init.js"></script>
   <!-- Meta Pixel -->
   <script>
   !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
@@ -192,6 +194,21 @@
       </div>
     </div>
     <a href="https://cvrevamp.info" class="back-link">Back to cvrevamp.info</a>
+
+  <script>
+    /* Funnel step 5: the payment went through and Stripe sent them back here.
+       Paired with checkout_opened on the previous page, this is what finally
+       measures the leak: how many reach Stripe versus how many come back.
+
+       Stripe appends its own query parameters on return. We record only whether
+       a session id was present, never the id itself and never an email. */
+    (function () {
+      var returned = /session_id=/.test(window.location.search);
+      if (window.cvrTrack) {
+        cvrTrack('purchase_completed', { returned_from_stripe: returned });
+      }
+    })();
+  </script>
   </div>
 </body>
 </html>
