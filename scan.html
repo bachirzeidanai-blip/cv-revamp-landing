@@ -3,25 +3,34 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- PostHog product analytics -->
-  <script src="/posthog-init.js"></script>
+  <!-- Cookie consent: must load before any tag. Tags below wait for cvrConsent. -->
+  <script src="/consent.js?v=20260902"></script>
+  <!-- PostHog product analytics (opted out until analytics consent) -->
+  <script src="/posthog-init.js?v=20260902"></script>
   <title>Free ATS CV Scan | CV Revamp</title>
   <meta name="description" content="Score your CV across the 8 dimensions recruiters and ATS systems actually check. Free, in 30 seconds." />
 
-  <!-- Meta Pixel -->
+  <!-- Meta Pixel, gated on advertising consent -->
   <script>
+  cvrConsent.when('ads', function () {
   !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
   fbq('init','1346710524072379');fbq('track','PageView');
+  });
   </script>
-  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1346710524072379&ev=PageView&noscript=1"/></noscript>
   <!-- End Meta Pixel -->
 
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GW614SVJJC"></script>
+  <!-- Google Analytics 4, gated on analytics consent -->
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-GW614SVJJC');
+    cvrConsent.when('analytics', function () {
+      var g = document.createElement('script');
+      g.async = true;
+      g.src = 'https://www.googletagmanager.com/gtag/js?id=G-GW614SVJJC';
+      document.head.appendChild(g);
+      gtag('js', new Date());
+      gtag('config', 'G-GW614SVJJC');
+    });
   </script>
 
   <!-- Cloudflare Turnstile loader (self-updating; do NOT add SRI) -->

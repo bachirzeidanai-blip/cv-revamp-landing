@@ -3,8 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- PostHog product analytics -->
-  <script src="/posthog-init.js"></script>
+  <!-- Cookie consent: must load before any tag. -->
+  <script src="/consent.js?v=20260902"></script>
+  <!-- PostHog product analytics (opted out until analytics consent) -->
+  <script src="/posthog-init.js?v=20260902"></script>
   <title>Privacy Policy | CV Revamp</title>
   <meta name="description" content="How CV Revamp (Synapticonn FZE) collects, uses, and protects your personal data." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -51,7 +53,7 @@
     <p>When you use the free CV scan or buy a rebuild, we collect:</p>
     <ul>
       <li><strong>Information you give us:</strong> your name, your email address, and your CV (including everything written in it, which may include your phone number, address, work history, and education). If you buy, we also collect the information needed to process your order.</li>
-      <li><strong>Information collected automatically:</strong> basic technical and usage data through cookies and similar tools, such as your approximate location, device and browser type, the pages you visit and how you move through the site (via PostHog, hosted in the European Union), a security signal from Cloudflare Turnstile to confirm you are not a bot, and advertising measurement signals from Meta Pixel and the LinkedIn Insight Tag, alongside Google Tag Manager, which manages such tags. PostHog may also record how a visitor interacts with a page (session replay). Anything you type into a form, including your name, email, phone number and CV, is masked and never appears in a recording.</li>
+      <li><strong>Information collected automatically:</strong> basic technical and usage data through cookies and similar tools, such as your approximate location, device and browser type, the pages you visit and how you move through the site (via PostHog, hosted in the European Union, and Google Analytics), a security signal from Cloudflare Turnstile to confirm you are not a bot, and advertising measurement signals from Meta Pixel and the LinkedIn Insight Tag, alongside Google Tag Manager, which manages such tags. PostHog may also record how a visitor interacts with a page (session replay). Anything you type into a form, including your name, email, phone number and CV, is masked and never appears in a recording. None of these analytics or advertising tools run until you choose "Accept all" in the cookie banner; only the security check is always on.</li>
     </ul>
 
     <h2>2. Why we use it, and our legal basis</h2>
@@ -71,6 +73,7 @@
       <li><strong>MailerLite:</strong> sending and managing our emails.</li>
       <li><strong>Cloudflare</strong> (Turnstile): bot and abuse protection.</li>
       <li><strong>PostHog</strong> (hosted in the European Union): product analytics and session replay, to understand how the site is used and where it fails. Form inputs are masked before any recording is stored.</li>
+      <li><strong>Google Analytics</strong> (via Google Tag Manager, and directly on the free scan page): understanding site usage.</li>
       <li><strong>Meta</strong> (Meta Pixel) and <strong>LinkedIn</strong> (Insight Tag): measuring whether our advertising on those platforms leads to visits and purchases, and reaching people who visited the site with follow-up advertising. <strong>Google Tag Manager</strong> manages these tags.</li>
       <li><strong>Stripe:</strong> processing payment if you buy. We do not see or store your full card details.</li>
     </ul>
@@ -98,7 +101,7 @@
     <p>To exercise any of these, email <a href="mailto:hello@cvrevamp.info">hello@cvrevamp.info</a> and we will respond within a reasonable time. You also have the right to complain to the UAE Data Office (or, if you are in the EU/UK, your local data protection authority).</p>
 
     <h2>7. Cookies</h2>
-    <p>We use cookies and similar technologies for: analytics and session replay (PostHog), advertising measurement (Meta Pixel and the LinkedIn Insight Tag, managed through Google Tag Manager), and security (Cloudflare Turnstile). PostHog masks everything you type into our forms, so recordings never contain your name, email, phone number or CV. You can control or disable cookies through your browser settings, and you can opt out of Meta and LinkedIn advertising measurement through your account settings on those platforms.</p>
+    <p>We use cookies and similar technologies for: analytics and session replay (PostHog and Google Analytics), advertising measurement (Meta Pixel and the LinkedIn Insight Tag, managed through Google Tag Manager), and security (Cloudflare Turnstile). Analytics and advertising cookies are set only after you choose "Accept all" in the cookie banner; if you choose "Reject non-essential", none of them are set and only the security check runs. You can change your choice at any time using the "Cookies" button at the bottom corner of every page. PostHog masks everything you type into our forms, so recordings never contain your name, email, phone number or CV. You can also control or disable cookies through your browser settings, and opt out of Meta and LinkedIn advertising measurement through your account settings on those platforms.</p>
 
     <h2>8. Changes</h2>
     <p>We may update this policy. The "last updated" date at the top shows the latest version, and material changes will be made clear on this page.</p>

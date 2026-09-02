@@ -27,9 +27,20 @@
 posthog.init('phc_t74NgHpJwerzN4p86j66MHmvAoaQ9F7fDxDRwdXKyuQo', {
   api_host: 'https://eu.i.posthog.com',
   person_profiles: 'identified_only',
-  capture_pageview: true,
+
+  /* Consent, three layers deep, because the default alone is not enough:
+     - opt_out_capturing_by_default only governs brand-new visitors. A returning visitor
+       whose browser holds a stored opt-in from before the banner existed keeps capturing.
+       So consent is also enforced explicitly after init (see below).
+     - capture_pageview is off and the $pageview is sent by hand after consent, otherwise
+       the automatic one can fire before the explicit opt-out lands for those visitors.
+     - persistence starts in memory so no PostHog cookie or localStorage entry exists
+       before acceptance; it is switched to localStorage+cookie on opt-in. */
+  opt_out_capturing_by_default: true,
+  capture_pageview: false,
   capture_pageleave: true,
-  persistence: 'localStorage+cookie',
+  disable_session_recording: true,
+  persistence: 'memory',
 
   /* Privacy. This site receives CVs, so recordings must never carry the contents of
      the form. maskAllInputs covers name, email, phone, LinkedIn and the file chooser. */
@@ -39,6 +50,36 @@ posthog.init('phc_t74NgHpJwerzN4p86j66MHmvAoaQ9F7fDxDRwdXKyuQo', {
     blockSelector: '[data-ph-block]'
   }
 });
+
+/* Wire consent. If analytics consent is already stored, opt in now; otherwise wait for
+   the banner. On a late opt-in the automatic $pageview has already been suppressed, so
+   capture it by hand, or the funnel loses its first step for consenting visitors. */
+(function () {
+  function optIn() {
+    try {
+      if (!window.posthog || !posthog.opt_in_capturing) return;
+      posthog.set_config({ persistence: 'localStorage+cookie' });
+      posthog.opt_in_capturing();
+      posthog.startSessionRecording();
+      posthog.capture('$pageview');
+    } catch (e) {}
+  }
+  function optOut() {
+    try {
+      if (!window.posthog || !posthog.opt_out_capturing) return;
+      posthog.opt_out_capturing();
+    } catch (e) {}
+  }
+  var consent = window.cvrConsent ? window.cvrConsent.get() : { analytics: false };
+  if (consent.analytics) {
+    optIn();
+  } else {
+    /* Enforce, do not assume. Also covers a page where consent.js failed to load:
+       stay opted out rather than fail open. */
+    optOut();
+    if (window.cvrConsent) window.cvrConsent.when('analytics', optIn);
+  }
+})();
 
 /* Small helper so the call sites stay readable and never throw if the SDK is blocked
    by an ad blocker, which a meaningful share of visitors will have. */
