@@ -1,20 +1,23 @@
 # CV Revamp
 
-> CV Revamp (cvrevamp.info) is an automated, AI-assisted career-services bundle for professionals in the UAE and wider GCC. For one flat fee it delivers an ATS-ready CV rewrite, a LinkedIn optimization guide, 10+ curated UAE/GCC job matches, a personalized career strategy report, and a salary-negotiation cheat-sheet, all within 48 hours, with no subscription.
+> CV Revamp (cvrevamp.info) is an AI-assisted, human-checked career service for professionals in the UAE, the wider GCC and East Africa. It has two products: a one-time CV rebuild, and Job Hunt, a monthly service that prepares tailored application packs for roles the client chooses. The client submits every application personally. CV Revamp never logs in to a client's accounts and never asks for passwords.
 
-## What it is
-- Operated by Synapticonn FZE (UAE).
-- Price: $9.99 USD launch offer (regular price $49.99), one-time, billed in AED equivalent. [confirm before publish]
-- Turnaround: 48 hours.
-- Languages: English and Arabic.
-- No subscription, no recurring charges.
+## Products
+- CV Revamp (one-time, $9.99 USD launch price, regular $49.99): ATS-ready CV rewrite in a plain and a designed version, LinkedIn optimization guide, 10+ curated job matches, a personalized career strategy report, delivered within 48 hours of the questionnaire.
+- Job Hunt, 12 packs ($39.99 USD for one month, not auto-renewing): 12 application packs, each with a CV tailored to the role, a matching cover letter, and a submission brief carrying an honest fit read, the gaps to prepare for, likely interview questions with answers, and exact submission instructions.
+- Job Hunt, 24 packs ($69.99 USD for one month, not auto-renewing): 24 packs plus a weekly shortlist of roles matched to the client's goals.
 
-## Who it is for
-- Mid-to-senior professionals in the UAE and GCC job market who want a complete, fast, affordable alternative to high-touch career coaches.
+## Positions taken
+- The client submits every application. No auto-apply, no account access, no passwords held.
+- Honest fit reads: a pack says plainly when a role is below the client's level or when a requirement is not met.
+- Guarantee: a pack that misses is rebuilt free without using a slot; unused slots are refunded on request at the batch price divided by the number of slots.
 
 ## Key pages
-- [Home and checkout](https://cvrevamp.info/)
+- [Home and CV rebuild checkout](https://cvrevamp.info/)
+- [Job Hunt](https://cvrevamp.info/job-hunt.html)
+- [Free CV scan](https://cvrevamp.info/scan.html)
 - [Pricing details](https://cvrevamp.info/pricing.md)
+- [Privacy](https://cvrevamp.info/privacy.html), [Terms](https://cvrevamp.info/terms.html)
 
-## Contact
-- hello@cvrevamp.info
+## Operator
+- Synapticonn FZE (UAE). Contact: hello@cvrevamp.info. Languages: English and Arabic.
