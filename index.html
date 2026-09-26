@@ -1337,6 +1337,15 @@
     uploadArea.classList.add('has-file');
     if (window.cvrTrack) cvrTrack('scan_carried_to_form', { lang: currentLang });
   }
+  /* A campaign link may carry the email and name (?email=&name=#form): fill them so the upload is the
+     only step left before payment. Never the CV itself; the scan does not keep it server side. */
+  try {
+    var qp = new URLSearchParams(window.location.search);
+    var qEmail = (qp.get('email') || '').trim(), qName = (qp.get('name') || '').trim();
+    if (qEmail && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(qEmail) && !document.getElementById('email').value) document.getElementById('email').value = qEmail;
+    if (qName && !document.getElementById('fullName').value) document.getElementById('fullName').value = qName.slice(0, 80);
+    if (qEmail && window.cvrTrack) cvrTrack('form_prefilled_from_link', { lang: currentLang });
+  } catch (e) {}
   if (window.CVStore && CVStore.getScan) {
     CVStore.getScan().then(function(rec) { if (rec && rec.blob && rec.fileName) useStoredScan(rec); }).catch(function() {});
   }
