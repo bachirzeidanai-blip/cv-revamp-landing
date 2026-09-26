@@ -3,7 +3,7 @@
 Two products. Start with the rebuild; add application packs when you are ready. Nothing auto-renews.
 
 ## 1. CV Revamp (one-time)
-- Price: $9.99 USD launch offer (regular price $49.99), one-time.
+- Price: $9.99 USD, one-time, no subscription.
 - Turnaround: within 48 hours of completing the questionnaire.
 - Included: ATS-ready CV rewrite (plain and designed versions), LinkedIn optimization guide, 10+ curated job matches, personalized career strategy report, 1 round of revisions.
 - Buy: https://cvrevamp.info/
