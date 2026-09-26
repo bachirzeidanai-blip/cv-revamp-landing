@@ -1323,7 +1323,26 @@
     uploadArea.classList.remove('has-file');
   }
 
+  /* A visitor who just ran the free scan already gave us the CV, name and email. cv-store.js
+     keeps them in the browser for a while; use them here so nobody is asked twice (27 Sep 2026).
+     storedScan is cleared the moment the visitor picks another file or presses Remove. */
+  var storedScan = null;
+  function useStoredScan(rec) {
+    storedScan = rec;
+    var nameEl = document.getElementById('fullName'), emailEl = document.getElementById('email');
+    if (rec.name && !nameEl.value) nameEl.value = rec.name;
+    if (rec.email && !emailEl.value) emailEl.value = rec.email;
+    fileNameText.textContent = (currentLang === 'ar' ? 'السيرة الذاتية التي فحصتها: ' : 'The CV you scanned: ') + rec.fileName;
+    fileNameEl.classList.add('show');
+    uploadArea.classList.add('has-file');
+    if (window.cvrTrack) cvrTrack('scan_carried_to_form', { lang: currentLang });
+  }
+  if (window.CVStore && CVStore.getScan) {
+    CVStore.getScan().then(function(rec) { if (rec && rec.blob && rec.fileName) useStoredScan(rec); }).catch(function() {});
+  }
+
   fileInput.addEventListener('change', function() {
+    storedScan = null;
     if (fileInput.files.length > 0) {
       var file = fileInput.files[0];
       if (file.size > 5 * 1024 * 1024) {
@@ -1338,6 +1357,7 @@
   });
 
   fileRemoveBtn.addEventListener('click', function(e) {
+    storedScan = null;
     e.stopPropagation();
     e.preventDefault();
     clearFileSelection();
@@ -1414,6 +1434,10 @@
     var phone = document.getElementById('phone').value.trim();
     var linkedin = document.getElementById('linkedin').value.trim();
     var cvFile = document.getElementById('cvFile').files[0];
+    if (!cvFile && storedScan && storedScan.blob) {
+      try { cvFile = new File([storedScan.blob], storedScan.fileName, { type: storedScan.mimeType || storedScan.blob.type }); }
+      catch (e) { cvFile = storedScan.blob; cvFile.name = storedScan.fileName; }
+    }
 
     /* Basic validation */
     if (!name || !email) {
