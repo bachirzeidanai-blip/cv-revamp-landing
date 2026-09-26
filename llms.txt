@@ -3,7 +3,7 @@
 > CV Revamp (cvrevamp.info) is an AI-assisted, human-checked career service for professionals in the UAE, the wider GCC and East Africa. It has two products: a one-time CV rebuild, and Job Hunt, a monthly service that prepares tailored application packs for roles the client chooses. The client submits every application personally. CV Revamp never logs in to a client's accounts and never asks for passwords.
 
 ## Products
-- CV Revamp (one-time, $9.99 USD launch price, regular $49.99): ATS-ready CV rewrite in a plain and a designed version, LinkedIn optimization guide, 10+ curated job matches, a personalized career strategy report, delivered within 48 hours of the questionnaire.
+- CV Revamp (one-time, $9.99 USD): ATS-ready CV rewrite in a plain and a designed version, LinkedIn optimization guide, 10+ curated job matches, a personalized career strategy report, delivered within 48 hours of the questionnaire.
 - Job Hunt, 12 packs ($39.99 USD for one month, not auto-renewing): 12 application packs, each with a CV tailored to the role, a matching cover letter, and a submission brief carrying an honest fit read, the gaps to prepare for, likely interview questions with answers, and exact submission instructions.
 - Job Hunt, 24 packs ($69.99 USD for one month, not auto-renewing): 24 packs plus a weekly shortlist of roles matched to the client's goals.
 
