@@ -161,6 +161,16 @@ function renderResult(res) {
     tease.appendChild(document.createTextNode(' across your CV that we fix in the full rebuild.'));
   } else { tease.textContent = ''; }
 
+  /* The button speaks to the band, and says the scan is saved: the homepage form reads the
+     stored CV, name and email, so nobody is asked to upload twice (27 Sep 2026). */
+  var cta = document.getElementById('cta-link');
+  if (cta) {
+    cta.textContent = t === 'low' ? 'Fix this in 48 hours for $9.99'
+                    : t === 'mid' ? 'Close these gaps in 48 hours for $9.99'
+                    : 'Polish it in 48 hours for $9.99';
+    var saved = document.getElementById('cta-saved');
+    if (saved) saved.textContent = 'Your scan is saved. One click to the order, no second upload.';
+  }
   show('state-result');
   window.scrollTo(0, 0);
   if (window.gtag) gtag('event', 'scan_scored', { score: res.overall_score });
