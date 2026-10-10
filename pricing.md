@@ -3,16 +3,16 @@
 Two products. Start with the rebuild; add application packs when you are ready. Nothing auto-renews.
 
 ## 1. CV Revamp (one-time)
-- Price: $9.99 USD, one-time, no subscription.
+- Price: $49.99 USD, one-time, no subscription.
 - Turnaround: within 48 hours of completing the questionnaire.
 - Included: ATS-ready CV rewrite (plain and designed versions), LinkedIn optimization guide, 10+ curated job matches, personalized career strategy report, 1 round of revisions.
 - Buy: https://cvrevamp.info/
 
 ## 2. Job Hunt, 12 packs
-- Price: $39.99 USD for one month of service. Not an automatically recurring subscription; a renewal link is sent near month end and can be ignored.
+- Price: $49.99 USD for one month of service. Not an automatically recurring subscription; a renewal link is sent near month end and can be ignored.
 - Included: 12 application packs for roles you choose (or roles we source). Each pack: a CV tailored to that role, a matching cover letter, and a submission brief with an honest fit read, the gaps to prepare for, likely questions with answers, a checklist and exact submission instructions.
 - You submit every application yourself. We never log in to your accounts and never ask for passwords.
-- Buy: https://buy.stripe.com/cNibJ1c8y3a6gaA28R00003
+- Buy: https://buy.stripe.com/aFaaEX1tU11Y8I828R00006
 
 ## 3. Job Hunt, 24 packs plus weekly shortlist
 - Price: $69.99 USD for one month of service. Not auto-renewing.
